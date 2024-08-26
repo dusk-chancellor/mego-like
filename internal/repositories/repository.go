@@ -3,6 +3,7 @@ package repositories
 import (
 	"github.com/dusk-chancellor/mego-like/internal/models"
 	"github.com/jmoiron/sqlx"
+	"github.com/redis/go-redis/v9"
 )
 
 type LikeRepository interface {
@@ -13,10 +14,12 @@ type LikeRepository interface {
 
 type likeRepository struct {
 	db *sqlx.DB
+	redis *redis.Client
 }
 
-func NewLikeRepository(db *sqlx.DB) LikeRepository {
+func NewLikeRepository(db *sqlx.DB, rdb *redis.Client) LikeRepository {
 	return &likeRepository{
 		db: db,
+		redis: rdb,
 	}
 }

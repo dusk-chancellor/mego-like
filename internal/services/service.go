@@ -13,12 +13,10 @@ type LikeService interface {
 
 type likeService struct {
 	likeRepo repositories.LikeRepository
-	likeLC *likeLocalCache
 }
 
-func NewLikeService(likeRepo repositories.LikeRepository, likeLC *likeLocalCache) LikeService {
+func NewLikeService(likeRepo repositories.LikeRepository) LikeService {
 	return &likeService{
 		likeRepo: likeRepo,
-		likeLC: likeLC,
 	}
 }

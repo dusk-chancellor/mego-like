@@ -9,7 +9,13 @@ import (
 const element = "like_service"
 
 func (s *likeService) Exists(like models.Like) bool {
-	return s.likeLC.Exists(like)
+	exists, err := s.likeRepo.Exists(like)
+	if err != nil {
+		log.Printf("Element: %s | Failed to check if like exists: %v", element, err)
+		return false
+	}
+
+	return exists
 }
 
 func (s *likeService) Like(like models.Like) (string, string, error) {
@@ -19,11 +25,15 @@ func (s *likeService) Like(like models.Like) (string, string, error) {
 		return "", "", err
 	}
 
-	go s.likeLC.Like(like)
-
 	return userId, postId, nil
 }
 
 func (s *likeService) Count(postId string) int32 {
-	return s.likeLC.Count(postId)
+	count, err := s.likeRepo.Count(postId)
+	if err != nil {
+		log.Printf("Element: %s | Failed to count likes: %v", element, err)
+		return 0
+	}
+
+	return count
 }

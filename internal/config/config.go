@@ -13,6 +13,9 @@ type Config struct {
 	DBPort     string `env:"DB_PORT" required:"true"`
 	DBName 	   string `env:"DB_NAME" required:"true"`
 
+	RedisHost  string `env:"REDIS_HOST" required:"true"`
+	RedisPort  string `env:"REDIS_PORT" required:"true"`
+
 	GRPCPort   string `env:"LIKE_SERVICE_GRPC_PORT" required:"true"`
 }
 
