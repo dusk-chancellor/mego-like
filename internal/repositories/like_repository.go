@@ -14,7 +14,6 @@ import (
 const element = "like_repository"
 var ctx = context.Background()
 
-
 func (r *likeRepository) Exists(like models.Like) (bool, error) {
 	key := fmt.Sprintf("%s:%s", like.UserId, like.PostId)
 	exists, _ := r.redis.Get(ctx, key).Bool()
@@ -50,6 +49,20 @@ func (r *likeRepository) Like(like models.Like) (string, string, error) {
 	return userId, postId, nil
 }
 
+func (r *likeRepository) Find(startIndex, pageSize int) ([]*models.Like, error) {
+	q := `SELECT * FROM likes LIMIT $1 OFFSET $2;`
+
+	var likes []*models.Like
+	if err := r.db.Select(&likes, q, startIndex, pageSize); err != nil {
+		log.Printf("Element: %s | Failed to find likes in db: %v", element, err)
+		return nil, err
+	}
+	if len(likes) == 0 {
+		return []*models.Like{}, nil
+	}
+	return likes, nil
+}
+
 func (r *likeRepository) Count(postId string) (int32, error) {
 /*	exists, _ := r.redis.Get(context.Background(), "*:"+postId).Bool() 
 	if exists {
@@ -70,7 +83,7 @@ func (r *likeRepository) Count(postId string) (int32, error) {
 
 	return count, nil
 }
-
+/*
 func (r *likeRepository) countRedis(postId string) (int32, error) {
 	var totalCount int64
 	var cursor uint64
@@ -97,3 +110,4 @@ func (r *likeRepository) countRedis(postId string) (int32, error) {
 	}
 	return int32(totalCount), nil
 }
+*/

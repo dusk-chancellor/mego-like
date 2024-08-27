@@ -6,9 +6,10 @@ import (
 )
 
 type LikeService interface {
-	Exists(like models.Like) bool
+	Exists(like models.Like) (bool, error)
 	Like(like models.Like) (string, string, error)
-	Count(postId string) int32
+	Count(postId string) (int32, error)
+	Find(pageSize int, pageToken string) ([]*models.Like, string, error)
 }
 
 type likeService struct {

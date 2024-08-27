@@ -10,6 +10,7 @@ type LikeRepository interface {
 	Exists(like models.Like) (bool, error)
 	Like(like models.Like) (string, string, error)
 	Count(postId string) (int32, error)
+	Find(startIndex, pageSize int) ([]*models.Like, error)
 }
 
 type likeRepository struct {
