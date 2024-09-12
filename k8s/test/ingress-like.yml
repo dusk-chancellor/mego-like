@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.org/proxy-connect-timeout: "3600s"
+    nginx.org/proxy-read-timeout: "3600s"
+  name: ingress-like
+  namespace: like
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: like.megotours.kz
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+              service:
+                name: like-service
+                port: 
+                  number: 80
