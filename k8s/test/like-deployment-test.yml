@@ -1,74 +1,74 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: favorite
-  namespace: favorite
+  name: like
+  namespace: like
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: favorite
+      app: like
   template:
     metadata:
       labels:
-        app: favorite
+        app: like
     spec:
       imagePullSecrets:
       - name: regcred
       containers:
-      - image: registry.gitlab.com/mego.tours/backend/favorite/test:latest
-        name: favorite
+      - image: registry.gitlab.com/mego.tours/backend/like/test:latest
+        name: like
         imagePullPolicy: Always
         env:
         - name: DB_NAME
           valueFrom:
             configMapKeyRef:
-              name: favorite-configmap
+              name: like-configmap
               key: DB_NAME
         - name: DB_USER
           valueFrom:
             configMapKeyRef:
-              name: favorite-configmap
+              name: like-configmap
               key: DB_USER
         - name: DB_PASSWORD
           valueFrom:
             configMapKeyRef:
-              name: favorite-configmap
+              name: like-configmap
               key: DB_PASSWORD
         - name: DB_HOST
           valueFrom:
             configMapKeyRef:
-              name: favorite-configmap
+              name: like-configmap
               key: DB_HOST
         - name: DB_PORT
           valueFrom:
             configMapKeyRef:
-              name: favorite-configmap
+              name: like-configmap
               key: DB_PORT
         - name: REDIS_HOST
           valueFrom:
             configMapKeyRef:
-              name: favorite-configmap
+              name: like-configmap
               key: REDIS_HOST
         - name: REDIS_PORT
           valueFrom:
             configMapKeyRef:
-              name: favorite-configmap
+              name: like-configmap
               key: REDIS_PORT
         - name: REDIS_OUTER_PORT
           valueFrom:
             configMapKeyRef:
-              name: favorite-configmap
+              name: like-configmap
               key: REDIS_OUTER_PORT
-        - name: FAVORITE_SERVICE_SERVER_PORT
+        - name: like_SERVICE_SERVER_PORT
           valueFrom:
             configMapKeyRef:
-              name: favorite-configmap
-              key: FAVORITE_SERVICE_SERVER_PORT
+              name: like-configmap
+              key: like_SERVICE_SERVER_PORT
         - name: DB_URL
           valueFrom:
             configMapKeyRef:
-              name: favorite-configmap
+              name: like-configmap
               key: DB_URL
         ports:
         - containerPort: 80
@@ -79,12 +79,12 @@ spec:
 kind: Service 
 apiVersion: v1 
 metadata:
-  name: favorite-service
-  namespace: favorite
+  name: like-service
+  namespace: like
 spec:
   type: ClusterIP
   selector:
-    app: favorite
+    app: like
   ports:
     - port: 80
       targetPort: 80
