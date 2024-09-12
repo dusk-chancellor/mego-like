@@ -55,11 +55,6 @@ spec:
             configMapKeyRef:
               name: like-configmap
               key: REDIS_PORT
-        - name: REDIS_OUTER_PORT
-          valueFrom:
-            configMapKeyRef:
-              name: like-configmap
-              key: REDIS_OUTER_PORT
         - name: like_SERVICE_SERVER_PORT
           valueFrom:
             configMapKeyRef:
