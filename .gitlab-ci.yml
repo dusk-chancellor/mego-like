@@ -4,7 +4,7 @@ stages:
   
 variables:
   branch_name: ${CI_COMMIT_REF_SLUG}
-  nameproject: user
+  nameproject: like
 
 build_image:
   stage: build
