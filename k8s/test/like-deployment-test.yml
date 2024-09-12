@@ -16,7 +16,7 @@ spec:
       imagePullSecrets:
       - name: regcred
       containers:
-      - image: registry.gitlab.com/mego.tours/backend/like/test:latest
+      - image: registry.gitlab.com/mego.tours/backend/like/main:latest
         name: like
         imagePullPolicy: Always
         env:
