@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: like
+  namespace: like
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: like
+  template:
+    metadata:
+      labels:
+        app: like
+    spec:
+      imagePullSecrets:
+      - name: regcred
+      containers:
+      - image: registry.gitlab.com/mego.tours/backend/like/main:latest
+        name: like
+        imagePullPolicy: Always
+        env:
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: like-configmap
+              key: DB_NAME
+        - name: DB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: like-configmap
+              key: DB_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: like-configmap
+              key: DB_PASSWORD
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: like-configmap
+              key: DB_HOST
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: like-configmap
+              key: DB_PORT
+        - name: REDIS_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: like-configmap
+              key: REDIS_HOST
+        - name: REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: like-configmap
+              key: REDIS_PORT
+        - name: like_SERVICE_SERVER_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: like-configmap
+              key: like_SERVICE_SERVER_PORT
+        - name: DB_URL
+          valueFrom:
+            configMapKeyRef:
+              name: like-configmap
+              key: DB_URL
+        ports:
+        - containerPort: 80
+          name: http
+
+---
+
+kind: Service 
+apiVersion: v1 
+metadata:
+  name: like-service
+  namespace: like
+spec:
+  type: NodePort
+  selector:
+    app: like
+  ports:
+    - nodePort: 30024
+      port: 80
+      targetPort: 80
