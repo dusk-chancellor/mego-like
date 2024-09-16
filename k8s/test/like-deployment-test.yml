@@ -77,9 +77,10 @@ metadata:
   name: like-service
   namespace: like
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: like
   ports:
-    - port: 80
+    - nodePort: 30024
+      port: 80
       targetPort: 80
