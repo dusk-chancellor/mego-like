@@ -11,19 +11,19 @@ type Config struct {
 	DBPassword string `env:"DB_PASSWORD" required:"true"`
 	DBHost     string `env:"DB_HOST" required:"true"`
 	DBPort     string `env:"DB_PORT" required:"true"`
-	DBName 	   string `env:"DB_NAME" required:"true"`
+	DBName     string `env:"DB_NAME" required:"true"`
 
-	RedisHost  string `env:"REDIS_HOST" required:"true"`
-	RedisPort  string `env:"REDIS_PORT" required:"true"`
+	RedisHost string `env:"REDIS_HOST" required:"true"`
+	RedisPort string `env:"REDIS_PORT" required:"true"`
 
-	GRPCPort   string `env:"LIKE_SERVICE_GRPC_PORT" required:"true"`
+	GRPCPort string `env:"LIKE_SERVICE_GRPC_PORT" required:"true"`
 }
 
 func LoadConfig() *Config {
 	path := "./.env"
 
-	var cfg *Config
-	if err := cleanenv.ReadConfig(path, &cfg); err != nil {
+	cfg := &Config{} // Create a pointer to Config
+	if err := cleanenv.ReadConfig(path, cfg); err != nil {
 		log.Fatalf("Failed to load config: %v", err)
 	}
 	return cfg
