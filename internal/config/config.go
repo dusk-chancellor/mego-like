@@ -20,8 +20,7 @@ type Config struct {
 	GRPCPort string `env:"LIKE_SERVICE_GRPC_PORT" required:"true"`
 }
 
-func LoadConfig() *Config {
-	path := "./.env"
+func LoadConfig(path string) *Config {
 	cfg := &Config{} // Create a pointer to Config
 	if err := cleanenv.ReadConfig(path, cfg); err != nil {
 		log.Fatalf("Failed to load config: %v", err)
