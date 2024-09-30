@@ -28,7 +28,7 @@ func main() {
 
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%s:%s", cfg.RedisHost, cfg.RedisPort),
-		Password: "8eWv458qwe",
+		Password: cfg.RedisPassword,
 		DB:       0,
 	})
 

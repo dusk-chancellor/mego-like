@@ -1,17 +1,19 @@
 package dto
 
 import (
-	"github.com/antibomberman/mego-protos/gen/go/like"
+	pb "github.com/antibomberman/mego-protos/gen/go/like"
 	"github.com/dusk-chancellor/mego-like/internal/models"
 )
 
-func ToPbLikes(model []*models.Like) (pbLikes []*like.Like) {
+func ToPbLikes(model []models.Like) []*pb.Like {
+	pbLikes := make([]*pb.Like, 0, len(model))
+
 	for _, modelLike := range model {
-		pbLike := &like.Like{
-			UserId: modelLike.UserId,
-			PostId: modelLike.PostId,
-		}
-		pbLikes = append(pbLikes, pbLike)
+		pbLikes = append(pbLikes, &pb.Like{
+			UserId:    modelLike.UserId,
+			PostId:    modelLike.PostId.Int64,
+			CommentId: modelLike.CommentId.Int64,
+		})
 	}
-	return
+	return pbLikes
 }
