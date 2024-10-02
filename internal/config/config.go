@@ -18,6 +18,14 @@ type Config struct {
 	RedisPassword string `env:"REDIS_PASSWORD" required:"true"`
 
 	GRPCPort string `env:"LIKE_SERVICE_GRPC_PORT" required:"true"`
+
+	UserServiceAddress     string `env:"USER_SERVICE_ADDRESS" required:"true"`
+	AuthServiceAddress     string `env:"AUTH_SERVICE_ADDRESS" required:"true"`
+	PostServiceAddress     string `env:"POST_SERVICE_ADDRESS" required:"true"`
+	StorageServiceAddress  string `env:"STORAGE_SERVICE_ADDRESS" required:"true"`
+	LikeServiceAddress     string `env:"LIKE_SERVICE_ADDRESS" required:"true"`
+	CommentServiceAddress  string `env:"COMMENT_SERVICE_ADDRESS" required:"true"`
+	FavoriteServiceAddress string `env:"FAVORITE_SERVICE_ADDRESS" required:"true"`
 }
 
 func LoadConfig(path string) *Config {

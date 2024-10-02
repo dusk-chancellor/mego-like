@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/dusk-chancellor/mego-like/internal/clients"
+	"github.com/jmoiron/sqlx"
 	"log"
 	"net"
 	"os"
@@ -20,11 +22,17 @@ import (
 
 func main() {
 	cfg := config.LoadConfig("./.env")
+	ctx := context.Background()
 	db, err := database.ConnectDB(cfg)
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
-	defer db.Close()
+	defer func(db *sqlx.DB) {
+		err := db.Close()
+		if err != nil {
+			log.Printf("Failed to close database connection: %v", err)
+		}
+	}(db)
 
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%s:%s", cfg.RedisHost, cfg.RedisPort),
@@ -32,14 +40,23 @@ func main() {
 		DB:       0,
 	})
 
-	err = rdb.Ping(context.Background()).Err()
+	err = rdb.Ping(ctx).Err()
 	if err != nil {
 		log.Fatal("redis connection error")
 	}
 	log.Println("Connected to Redis")
 
+	postClient, err := clients.NewPostClient(cfg.PostServiceAddress)
+	if err != nil {
+		log.Fatalf("Failed to connect to post service: %v", err)
+	}
+	commentClient, err := clients.NewCommentClient(cfg.CommentServiceAddress)
+	if err != nil {
+		log.Fatalf("Failed to connect to comment service: %v", err)
+	}
+
 	likeRepo := repositories.NewLikeRepository(db, rdb)
-	likeService := services.NewLikeService(likeRepo)
+	likeService := services.NewLikeService(likeRepo, postClient, commentClient)
 
 	l, err := net.Listen("tcp", ":"+cfg.GRPCPort)
 	if err != nil {

@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"github.com/dusk-chancellor/mego-like/internal/clients"
 	"github.com/dusk-chancellor/mego-like/internal/models"
 	"github.com/dusk-chancellor/mego-like/internal/repositories"
 )
@@ -16,11 +17,15 @@ type LikeService interface {
 }
 
 type likeService struct {
-	likeRepo repositories.LikeRepository
+	likeRepo      repositories.LikeRepository
+	postClient    *clients.PostClient
+	commentClient *clients.CommentClient
 }
 
-func NewLikeService(likeRepo repositories.LikeRepository) LikeService {
+func NewLikeService(likeRepo repositories.LikeRepository, postClient *clients.PostClient, commentClient *clients.CommentClient) LikeService {
 	return &likeService{
-		likeRepo: likeRepo,
+		likeRepo:      likeRepo,
+		postClient:    postClient,
+		commentClient: commentClient,
 	}
 }

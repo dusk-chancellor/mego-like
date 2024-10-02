@@ -3,7 +3,7 @@ module github.com/dusk-chancellor/mego-like
 go 1.22.5
 
 require (
-	github.com/antibomberman/mego-protos v0.1.12
+	github.com/antibomberman/mego-protos v0.1.20
 	github.com/ilyakaznacheev/cleanenv v1.5.0
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/lib/pq v1.10.9

@@ -2,10 +2,12 @@ package services
 
 import (
 	"context"
-	"log"
-
+	"errors"
+	commentPb "github.com/antibomberman/mego-protos/gen/go/comment"
+	postPb "github.com/antibomberman/mego-protos/gen/go/post"
 	"github.com/dusk-chancellor/mego-like/internal/models"
 	"github.com/dusk-chancellor/mego-like/pkg/utils"
+	"log"
 )
 
 const element = "like_service"
@@ -34,9 +36,23 @@ func (s *likeService) Exists(ctx context.Context, userId, postId, commentId int6
 
 func (s *likeService) AddLike(ctx context.Context, userId, postId, commentId int64) error {
 	if postId != 0 {
+		exists, err := s.postClient.Exists(ctx, &postPb.GetByIdRequest{Id: postId})
+		if err != nil {
+			return err
+		}
+		if !exists.Exists {
+			return errors.New("post not found")
+		}
 		return s.likeRepo.PostAddLike(ctx, userId, postId)
 	}
 	if commentId != 0 {
+		exists, err := s.commentClient.Exists(ctx, &commentPb.GetByIdRequest{Id: commentId})
+		if err != nil {
+			return err
+		}
+		if !exists.Exists {
+			return errors.New("comment not found")
+		}
 		return s.likeRepo.CommentAddLike(ctx, userId, commentId)
 	}
 
