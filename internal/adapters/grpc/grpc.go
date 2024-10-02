@@ -11,12 +11,12 @@ import (
 type serverAPI struct {
 	like.UnimplementedLikeServiceServer
 	service services.LikeService
-	cfg *config.Config
+	cfg     *config.Config
 }
 
 func RegisterGRPC(grpc *grpc.Server, service services.LikeService, cfg *config.Config) {
 	like.RegisterLikeServiceServer(grpc, &serverAPI{
 		service: service,
-		cfg: cfg,
+		cfg:     cfg,
 	})
 }

@@ -1,7 +1,10 @@
 package models
 
+import "database/sql"
+
 type Like struct {
-	Id 	   int	  `db:"id"`
-	UserId string `db:"user_id"`
-	PostId string `db:"post_id"`
+	Id        int64         `db:"id"`
+	UserId    int64         `db:"user_id"`
+	PostId    sql.NullInt64 `db:"post_id"`
+	CommentId sql.NullInt64 `db:"comment_id"`
 }

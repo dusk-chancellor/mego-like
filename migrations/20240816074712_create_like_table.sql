@@ -4,7 +4,8 @@ CREATE TABLE IF NOT EXISTS likes
 (
     id SERIAL PRIMARY KEY,
     user_id VARCHAR(255) NOT NULL,
-    post_id VARCHAR(255) NOT NULL
+    post_id INTEGER NULL,
+    comment_id INTEGER NULL
 );
 -- +goose StatementEnd
 

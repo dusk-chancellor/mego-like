@@ -21,7 +21,7 @@ import (
 )
 
 func main() {
-	cfg := config.LoadConfig("./.env")
+	cfg := config.LoadConfig("./dev.env")
 	ctx := context.Background()
 	db, err := database.ConnectDB(cfg)
 	if err != nil {
