@@ -43,6 +43,13 @@ func (s *likeService) AddLike(ctx context.Context, userId, postId, commentId int
 		if !exists.Exists {
 			return errors.New("post not found")
 		}
+		postLikeExists, err := s.likeRepo.PostExists(ctx, userId, postId)
+		if err != nil {
+			return err
+		}
+		if postLikeExists {
+			return errors.New("like already exists")
+		}
 		return s.likeRepo.PostAddLike(ctx, userId, postId)
 	}
 	if commentId != 0 {
@@ -53,6 +60,14 @@ func (s *likeService) AddLike(ctx context.Context, userId, postId, commentId int
 		if !exists.Exists {
 			return errors.New("comment not found")
 		}
+		commentLikeExists, err := s.likeRepo.CommentExists(ctx, userId, commentId)
+		if err != nil {
+			return err
+		}
+		if commentLikeExists {
+			return errors.New("like already exists")
+		}
+
 		return s.likeRepo.CommentAddLike(ctx, userId, commentId)
 	}
 
